@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="/static/stylesheets/style.css">
 <!-- <link rel="shortcut icon" href="/static/favicon.ico"> -->
 </head>
-<body>
+<body class="body_class">
     <nav class="navbar navbar-expand">
         <div class="container-fluid">
           <div class="navbar-header">
@@ -30,7 +30,7 @@
               <form class="navbar-form navbar-right" action="/users">
                 <input name="q" class="form-control" placeholder="Search LangsWorld" id="search">
                 <button class="btn btn-default">
-                  <span class="fa fa-search"></span>
+                  <!-- <span class="fa fa-search"></span> -->
                 </button>
               </form>
             </li>
@@ -41,13 +41,12 @@
             
             {% else %}
             <li>
-              <a href="/users/{{ g.user.id }}">
-                <img src="{{ g.user.image_url }}" alt="{{ g.user.username }}">
+              <a href="/favorites/{{ g.user.id }}">{{g.user.username}}
               </a>
             </li>
             <!-- <li><a href="/messages/new">New Message</a></li> -->
             <li><a href="/logout">Log out</a></li>
-            <li><a href="/favorites/{{ g.user.id }}" class="btn btn-primary">Favorites</a></li>
+            <li><a href="/favorites/{{ g.user.id }}">Favorites</a></li>
             {% endif %}
           </ul>
         </div>
