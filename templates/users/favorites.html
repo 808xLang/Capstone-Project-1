@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>
+    {% for fav in favorites %}
+    {{fav.name}}
+    {% endfor %}
+</h1>
+
+{% endblock %}

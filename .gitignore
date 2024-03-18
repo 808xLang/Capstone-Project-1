@@ -1,0 +1,7 @@
+./venv/
+./__pycache__/
+__pycache__/
+./venv/lib/python3.8/site-packages/
+venv/*
+venv/lib/
+venv/

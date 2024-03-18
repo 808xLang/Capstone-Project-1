@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div>
+            <h1>Search Manga</h1>
+            <form method="POST "action="/called_manga">
+                {{form.hidden_tag()}}
+                {% for field in form if field.widget.input_type != 'hidden'%}
+                <p>
+                  {{field.label}} 
+                  {{field}}
+                  <button>Search</button>
+          
+                </p>
+                {% endfor %}
+                
+            </form>
+                {% for manga in mangas %}
+                    <h3>Title: {{manga.get('title')}}</h3>
+                    <h5>Summary: {{manga.get('summary')}}</h5>
+                    <h3>Genres: {{','.join(manga.get('genres'))}}</h3>
+                    <h4>Total Chapters: {{manga.get('totat_chapter')}}</h4>
+                    <h4>ID: {{manga.get('id')}}</h4>
+
+                    <form method="POST" action="/users/favorite/{{manga.get('title')}}">
+                        <button>
+                            <i class="fa fa-thumbs-up"></i> 
+                        </button>
+                    </form>
+                {% endfor %}
+    </div>
+{% endblock %}
