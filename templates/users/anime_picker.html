@@ -8,24 +8,25 @@
                 <p>
                   {{field.label}} 
                   {{field}}
-                  <button type="button" class="btn btn-primary btn-sm">Search</button>
+                  <button class="btn btn-primary btn-sm">Search</button>
           
                 </p>
                 {% endfor %}
                 
             </form>
-                {% for manga in mangas %}
-                    <h3>Title: {{manga.get('title')}}</h3>
-                    <h5>Summary: {{manga.get('summary')}}</h5>
-                    <h3>Genres: {{','.join(manga.get('genres'))}}</h3>
-                    <h4>Total Chapters: {{manga.get('totat_chapter')}}</h4>
-                    <h4>ID: {{manga.get('id')}}</h4>
-
+                <!-- {% for manga in mangas %}
+                    <img class="img-fluid" src="{{manga.get('thumb')}}" alt="Card image cap">
                     <form method="POST" action="/users/favorite/{{manga.get('title')}}">
                         <button>
-                            <i class="fa fa-thumbs-up"></i> 
+                            <i class="fa fa-heart"></i> 
                         </button>
                     </form>
-                {% endfor %}
+                    <h3>Title: {{manga.get('title')}}</h3>
+                    <h5>Summary: {{manga.get('summary')}}</h5>
+                    <h3>Genres: {{', '.join(manga.get('genres'))}}</h3>
+                    <h4>Total Chapters: {{manga.get('total_chapter')}}</h4>
+
+             
+                {% endfor %} -->
     </div>
 {% endblock %}

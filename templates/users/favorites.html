@@ -6,7 +6,13 @@
 <h1>
     {% for fav in favorites %}
     {{fav.name}}
+    <form method="POST" action="/users/favorite/{{fav.name}}">
+        <button>
+            <i class="fa fa-heart"></i> 
+        </button>
+    </form>
     {% endfor %}
+    
 </h1>
 
 {% endblock %}

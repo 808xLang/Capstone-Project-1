@@ -19,5 +19,5 @@ class SearchForm(FlaskForm):
     """Genre"""
 
     genre = SelectField('Genre',
-                         choices=[('Action', "Action"), ('Drama', "Drama"), ('Comedy', "Comedy"), ('Fantasy', 'Fantasy'), ('Harem',"Harem")])
+                         choices=[ ('Drama', "Drama"), ('Comedy', "Comedy"), ('Fantasy', 'Fantasy'), ('Harem',"Harem")])
     

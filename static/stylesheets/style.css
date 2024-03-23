@@ -45,6 +45,11 @@ body {
     align-items: center;
   }
   
+  .img-fluid{
+    width: 100%;
+    max-width:300px;
+  }
+
   .navbar-brand > img {
     display: inline-block;
     margin-bottom: 2px;

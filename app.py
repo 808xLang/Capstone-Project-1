@@ -60,7 +60,7 @@ def do_logout():
 
 
 
-def fetch_manga(genre: str= 'Action'):
+def fetch_manga(genre):
     print(genre)
     querystring = {"page":"1","genres": genre}
 
@@ -85,12 +85,13 @@ def favorite_manga(manga_title):
         like = Favorites(user_id=g.user.id, name=manga_title)
         db.session.add(like)
         db.session.commit()
+        return render_template('users/anime_picker.html', mangas=fetch_manga(), form=SearchForm())
     else:
         like = Favorites.query.filter(Favorites.user_id==g.user.id, Favorites.name==manga_title).first()
         db.session.delete(like)
         db.session.commit()
     print('\n\n\nHERE\n\n\n')
-    return render_template('users/anime_picker.html', mangas=fetch_manga(), form=SearchForm())
+    return render_template('users/favorites.html', mangas=fetch_manga(), form=SearchForm())
 
 
 
@@ -180,8 +181,14 @@ def root():
 @app.route('/search_anime/<int:user_id>', methods=["GET", "POST"])
 def search_anime(user_id):
     user = User.query.get_or_404(user_id)
-    return render_template('users/anime_picker.html', user=user, form=SearchForm())
-
+    form = SearchForm()
+    if form.validate_on_submit():
+        genres = form.genre.data
+        mangas = fetch_manga(genres)
+        return redirect('/called_manga', user=user, form=form, 
+                        genre=genres,mangs=mangas)
+    else:
+        return render_template('users/anime_picker.html', form=form, user=user)
 
 
 @app.route('/called_manga', methods=["GET", "POST"])
@@ -190,7 +197,7 @@ def get_manga():
     genre = SearchForm().genre.data
     mangas = fetch_manga(genre)
 
-    return render_template('users/anime_picker.html', mangas=mangas, form=SearchForm())
+    return render_template('users/picked_anime.html', mangas=mangas, form=SearchForm())
     
 
 
@@ -200,6 +207,6 @@ def show_favorites(user_id):
         flash("Access unauthorized.", "danger")
         return redirect("/")
     user = User.query.get_or_404(user_id)
-    print(user.favorites[0].name)
+    # print(user.favorites[0].name)
     return render_template("users/favorites.html",favorites=user.favorites )
 
