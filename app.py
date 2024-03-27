@@ -60,20 +60,7 @@ def do_logout():
 
 
 
-def fetch_manga(genre):
-    print(genre)
-    querystring = {"page":"1","genres": genre}
 
-
-    res = requests.get(f"{API_BASE_URL}/fetch", headers=headers, params=querystring)
-    data = res.json()
-    for key, val in data.items():
-        print(key, val)
-    # title = data["data"][0]['title']
-    # summary = data["data"][0]['summary']
-    # manga = {'title': title, 'summary': summary}
-    mangas = data.get('data')
-    return mangas
 
 
 
@@ -177,6 +164,22 @@ def root():
         return render_template('home.html')
     else:
         return render_template('home-anon.html')
+    
+
+
+def fetch_manga(genre):
+    # print(genre)
+    querystring = {"page":"1","genres": genre}
+
+
+    res = requests.get(f"{API_BASE_URL}/fetch", headers=headers, params=querystring)
+    data = res.json()
+    for key, val in data.items():
+        print(key, val)
+    mangas = data.get('data')
+    return mangas
+
+
 
 @app.route('/search_anime/<int:user_id>', methods=["GET", "POST"])
 def search_anime(user_id):
@@ -184,6 +187,7 @@ def search_anime(user_id):
     form = SearchForm()
     if form.validate_on_submit():
         genres = form.genre.data
+        print(genres)
         mangas = fetch_manga(genres)
         return redirect('/called_manga', user=user, form=form, 
                         genre=genres,mangs=mangas)
