@@ -2,6 +2,7 @@
 {% block content %}
 
 <div>
+    <h1>Picked Anime for Genre: {{ genre }}</h1>
 {% for manga in mangas %}
 <img class="img-fluid" src="{{manga.get('thumb')}}" alt="Card image cap">
 <form method="POST" action="/users/favorite/{{manga.get('title')}}">
@@ -10,8 +11,8 @@
     </button>
 </form>
 <h3>Title: {{manga.get('title')}}</h3>
-<h5>Summary: {{manga.get('summary')}}</h5>
 <h3>Genres: {{', '.join(manga.get('genres'))}}</h3>
+<h5>Summary: {{manga.get('summary')}}</h5>
 <h4>Total Chapters: {{manga.get('total_chapter')}}</h4>
 
 

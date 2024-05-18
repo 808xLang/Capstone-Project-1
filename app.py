@@ -1,5 +1,5 @@
 import requests
-from flask import Flask, redirect, render_template, flash, session, g
+from flask import Flask, redirect, render_template, flash, request, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
@@ -66,19 +66,20 @@ def do_logout():
 
 @app.route('/users/favorite/<manga_title>', methods=['POST'])
 def favorite_manga(manga_title):
+    genre = request.args.get('genre')
     print('\n\n\nHERE\n\n\n')
     favorites = [like.name for like in g.user.favorites]
     if manga_title not in favorites:
         like = Favorites(user_id=g.user.id, name=manga_title)
         db.session.add(like)
         db.session.commit()
-        return render_template('users/anime_picker.html', mangas=fetch_manga(), form=SearchForm())
+        return render_template('users/anime_picker.html', mangas=fetch_manga(genre), form=SearchForm())
     else:
         like = Favorites.query.filter(Favorites.user_id==g.user.id, Favorites.name==manga_title).first()
         db.session.delete(like)
         db.session.commit()
     print('\n\n\nHERE\n\n\n')
-    return render_template('users/favorites.html', mangas=fetch_manga(), form=SearchForm())
+    return render_template('users/anime_picker.html', mangas=fetch_manga(genre), form=SearchForm())
 
 
 
@@ -168,10 +169,11 @@ def root():
 
 
 def fetch_manga(genre):
+    # form = SearchForm()
+    print(f"SELECTED GENRE: {genre}")
+    # genre = request.form.get('genre')
     # print(genre)
     querystring = {"page":"1","genres": genre}
-
-
     res = requests.get(f"{API_BASE_URL}/fetch", headers=headers, params=querystring)
     data = res.json()
     for key, val in data.items():
@@ -185,11 +187,14 @@ def fetch_manga(genre):
 def search_anime(user_id):
     user = User.query.get_or_404(user_id)
     form = SearchForm()
+    
+    
     if form.validate_on_submit():
         genres = form.genre.data
-        print(genres)
+        # print(genres)
         mangas = fetch_manga(genres)
-        return redirect('/called_manga', user=user, form=form, 
+        session['mangas'] = mangas
+        return redirect('/called_manga', user=user,  
                         genre=genres,mangs=mangas)
     else:
         return render_template('users/anime_picker.html', form=form, user=user)
@@ -198,15 +203,16 @@ def search_anime(user_id):
 @app.route('/called_manga', methods=["GET", "POST"])
 def get_manga():
 
-    genre = SearchForm().genre.data
+    genre = request.args.get('genre')
     mangas = fetch_manga(genre)
 
-    return render_template('users/picked_anime.html', mangas=mangas, form=SearchForm())
+    return render_template('users/picked_anime.html', mangas=mangas, genre=genre, form=SearchForm())
     
 
 
 @app.route('/favorites/<int:user_id>')
 def show_favorites(user_id):
+    print()
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")

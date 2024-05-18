@@ -1,7 +1,11 @@
-{% extends 'base.html' %}
-{% block content %}
-    <div>
-            <h1>Welcome to the LangsWorld Manga Organizer</h1>
-            <a href="/search_anime/{{ g.user.id }}" class="btn btn-primary">Search manga</a>
+{% extends 'base.html' %} {% block content %}
+<div>
+  <div class="homediv">
+    <div class="center-content">
+      <h1 class="center-text">Welcome to the LangsWorld Manga Organizer</h1>
+      <a href="/search_anime/{{ g.user.id }}" class="btn btn-primary btn-lg btn-block"
+        >Search manga</a>
     </div>
+  </div>
+</div>
 {% endblock %}
